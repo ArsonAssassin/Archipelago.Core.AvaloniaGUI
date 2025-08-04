@@ -1,0 +1,257 @@
+<Window xmlns="https://github.com/avaloniaui"
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaTitleBarHeightHint="-1"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Archipelago.Core.AvaloniaGUI.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:views="clr-namespace:Archipelago.Core.AvaloniaGUI.Views"
+        xmlns:models="using:Archipelago.Core.AvaloniaGUI.Models"
+        mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="700"
+        Width="600" Height="700"
+        x:Class="Archipelago.Core.AvaloniaGUI.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="Archipelago Client"
+        Background="#202020">
+  <Window.Styles>
+    <Style Selector="Window">
+      <!-- Set the title bar background color -->
+      <Setter Property="Background" Value="#202020"/>
+
+      <!-- Set the title bar foreground (text) color -->
+      <Setter Property="Foreground" Value="White"/>
+    </Style>
+  </Window.Styles>
+  <Design.DataContext>
+    <vm:MainWindowViewModel/>
+  </Design.DataContext>
+
+  <DockPanel Name="TitleBarPanel">
+    <!-- Header bar -->
+    <Border Name="HeaderBar" DockPanel.Dock="Top" Height="40" Background="#373737">
+      <Grid>
+        <Button HorizontalAlignment="Left"
+                Width="40"
+                Height="40"
+                Background="Transparent"
+                Command="{Binding TogglePaneCommand}">
+          <Path Data="M3,6 L21,6 M3,12 L21,12 M3,18 L21,18"
+                Stroke="White"
+                StrokeThickness="2"
+                Margin="4"/>
+        </Button>
+        <TextBlock Text="Archipelago Client"
+                  VerticalAlignment="Center"
+                  HorizontalAlignment="Center"
+                  Foreground="White"/>
+      </Grid>
+    </Border>
+
+
+    <SplitView IsPaneOpen="{Binding IsPaneOpen}"
+             DisplayMode="Overlay"
+             PaneBackground="#202020"
+               OpenPaneLength="300">
+
+      <!-- Flyout Panel (Settings) -->
+      <SplitView.Pane>
+        <StackPanel>
+          <Border Background="#373737" Padding="0" Margin="0">
+            <TextBlock Text="Settings" FontSize="16"/>
+          </Border>
+          <Grid RowDefinitions="*,*,*,*,*,*,*"
+                ColumnDefinitions="*,4*"
+                Margin="10,20,10,0"
+                VerticalAlignment="Top">
+
+            <TextBlock Grid.Row="0" Grid.Column="0"
+                      VerticalAlignment="Center"
+                      Text="Host: "
+                      FontSize="12"
+                      Foreground="White" Margin="5"/>
+            <TextBox Grid.Row="0" Grid.Column="1"
+                    Watermark="Enter Host e.g. Archipelago.gg:38281"
+                    FontSize="12"
+                    Text="{Binding Host}"
+                    Background="DarkGray" Margin="5"/>
+
+            <TextBlock Grid.Row="1" Grid.Column="0"
+                      VerticalAlignment="Center"
+                      Text="Slot: "
+                      FontSize="12"
+                      Foreground="White" Margin="5"/>
+            <TextBox Grid.Row="1" Grid.Column="1"
+                    Watermark="Enter Slot e.g. Player1"
+                    FontSize="12"
+                    Text="{Binding Slot}"
+                    Background="DarkGray" Margin="5"/>
+
+            <TextBlock Grid.Row="2" Grid.Column="0"
+                      VerticalAlignment="Center"
+                      Text="Password: "
+                      FontSize="12"
+                      Foreground="White" Margin="5"/>
+            <TextBox Grid.Row="2" Grid.Column="1"
+                    Watermark="Enter Password"
+                    PasswordChar="*"
+                    FontSize="12"
+                    Text="{Binding Password}"
+                    Background="DarkGray" Margin="5"/>
+
+            <Button Grid.Row="3"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Content="Connect"
+                    Command="{Binding ConnectClickedCommand}"
+                    IsEnabled="{Binding ConnectButtonEnabled}"
+                    Background="DarkGray" Margin="5" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
+
+            <TextBlock Grid.Row="4" Grid.Column="0"
+                      VerticalAlignment="Center"
+                      Text="Autoscroll Enabled: "
+                      FontSize="12"
+                      Foreground="White" Margin="5"/>
+            <ToggleSwitch Grid.Row="4" Grid.Column="1" IsChecked="{Binding AutoscrollEnabled}"/>
+
+            <TextBlock Grid.Row="5" Grid.Column="0"
+                      VerticalAlignment="Center"
+                      Text="LogLevel: "
+                      FontSize="12"
+                      Foreground="White" Margin="5"/>
+            <ComboBox Grid.Row="5" Grid.Column="1"
+                     ItemsSource="{Binding LogEventLevels}"
+                     SelectedItem="{Binding SelectedLogLevel}"
+                     Background="DarkGray" Margin="5"/>
+
+            <Button Grid.Row="6"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Content="UNSTUCK"
+                    Command="{Binding UnstuckClickedCommand}"
+                    IsEnabled="{Binding UnstuckButtonEnabled}"
+                    Background="DarkGray" Margin="5" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
+          </Grid>
+
+          <StackPanel VerticalAlignment="Bottom" Spacing="10">
+            <TextBlock Margin="10"
+                      HorizontalAlignment="Center"
+                      FontSize="12"
+                      Text="{Binding ClientVersion, StringFormat='Client Version: {0}'}"
+                      Foreground="White"/>
+            <TextBlock Margin="10"
+                      HorizontalAlignment="Center"
+                      FontSize="12"
+                      Text="{Binding ArchipelagoVersion, StringFormat='Archipelago Version: {0}'}"
+                      Foreground="White"/>
+          </StackPanel>
+        </StackPanel>
+      </SplitView.Pane>
+
+      <!-- Main Content -->
+      <SplitView.Content>
+        <TabControl Background="#202020">
+          <!-- Log Tab -->
+          <TabItem Header="Log">
+            <Grid RowDefinitions="*,Auto">
+              <ListBox Name="Log" Grid.Row="0"
+                          ItemsSource="{Binding LogList}">
+                <ListBox.ItemTemplate>
+                  <DataTemplate DataType="models:LogListItem">
+                    <Border Background="#373737"
+                           Padding="5"
+                           Margin="0"
+                           BoxShadow="0 2 4 0 #40000000">
+                      <ItemsControl ItemsSource="{Binding TextSpans}">
+                        <ItemsControl.ItemsPanel>
+                          <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" Spacing="2"/>
+                          </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                          <DataTemplate DataType="models:TextSpan">
+                            <TextBlock Text="{Binding Text}"
+                                     Foreground="{Binding TextColor}"
+                                     TextWrapping="Wrap"/>
+                          </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                      </ItemsControl>
+                    </Border>
+                  </DataTemplate>
+                </ListBox.ItemTemplate>
+              </ListBox>
+              <Grid Grid.Row="1"
+                    ColumnDefinitions="5*,*">
+                <TextBox Grid.Column="0"
+                        Text="{Binding CommandText}"
+                        Background="DarkGray"/>
+                <Button Grid.Column="1"
+                        Content="Send"
+                        Command="{Binding CommandSentCommand}"
+                        Background="DarkGray"/>
+              </Grid>
+            </Grid>
+          </TabItem>
+
+          <!-- Hints Tab -->
+          <TabItem Header="Hints">
+            <ListBox ItemsSource="{Binding HintList}">
+              <ListBox.ItemTemplate>
+                <DataTemplate DataType="models:LogListItem">
+                  <Border Background="#373737"
+                         Padding="5"
+                         Margin="0"
+                         BoxShadow="0 2 4 0 #40000000">
+                    <ItemsControl ItemsSource="{Binding TextSpans}">
+                      <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                          <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                      </ItemsControl.ItemsPanel>
+                      <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="models:TextSpan">
+                          <TextBlock Text="{Binding Text}"
+                                   Foreground="{Binding TextColor}"
+                                   TextWrapping="Wrap"/>
+                        </DataTemplate>
+                      </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                  </Border>
+                </DataTemplate>
+              </ListBox.ItemTemplate>
+            </ListBox>
+          </TabItem>
+
+          <!-- Received Items Tab -->
+          <TabItem Header="Received Items">
+            <ListBox ItemsSource="{Binding ItemList}">
+              <ListBox.ItemTemplate>
+                <DataTemplate DataType="models:LogListItem">
+                  <Border Background="#373737"
+                         Padding="5"
+                         Margin="0"
+                         BoxShadow="0 2 4 0 #40000000">
+                    <ItemsControl ItemsSource="{Binding TextSpans}">
+                      <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                          <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                      </ItemsControl.ItemsPanel>
+                      <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="models:TextSpan">
+                          <TextBlock Text="{Binding Text}"
+                                   Foreground="White"
+                                   TextWrapping="Wrap"/>
+                        </DataTemplate>
+                      </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                  </Border>
+                </DataTemplate>
+              </ListBox.ItemTemplate>
+            </ListBox>
+          </TabItem>
+        </TabControl>
+      </SplitView.Content>
+    </SplitView>
+  </DockPanel>
+</Window>
