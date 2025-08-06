@@ -7,7 +7,7 @@
 
     <Product>Archipelago.Core.AvaloniaGUI</Product>
     <PackageId>Archipelago.Core.AvaloniaGUI</PackageId>
-    <Version>0.2.1</Version>
+    <Version>0.2.2</Version>
     <Authors>ArsonAssassin</Authors>
     <Description>Cross platform UI library for Archipelago.Core</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Archipelago.Core" Version="1.1.4" />
+    <PackageReference Include="Archipelago.Core" Version="1.1.6" />
     <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
     <PackageReference Include="Avalonia.Fonts.Inter" Version="$(AvaloniaVersion)" />

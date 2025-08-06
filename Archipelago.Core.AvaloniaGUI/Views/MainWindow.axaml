@@ -156,6 +156,11 @@
             <Grid RowDefinitions="*,Auto">
               <ListBox Name="Log" Grid.Row="0"
                           ItemsSource="{Binding LogList}">
+                <ListBox.Styles>
+                  <Style Selector="ListBoxItem">
+                    <Setter Property="Padding" Value="2" />
+                  </Style>
+                </ListBox.Styles>
                 <ListBox.ItemTemplate>
                   <DataTemplate DataType="models:LogListItem">
                     <Border Background="#373737"
@@ -196,6 +201,11 @@
           <!-- Hints Tab -->
           <TabItem Header="Hints">
             <ListBox ItemsSource="{Binding HintList}" Name="HintList">
+              <ListBox.Styles>
+                <Style Selector="ListBoxItem">
+                  <Setter Property="Padding" Value="2" />
+                </Style>
+              </ListBox.Styles>
               <ListBox.ItemTemplate>
                 <DataTemplate DataType="models:LogListItem">
                   <Border Background="#373737"
@@ -225,6 +235,11 @@
           <!-- Received Items Tab -->
           <TabItem Header="Received Items">
             <ListBox ItemsSource="{Binding ItemList}" Name="ItemList">
+              <ListBox.Styles>
+                <Style Selector="ListBoxItem">
+                  <Setter Property="Padding" Value="2" />
+                </Style>
+              </ListBox.Styles>
               <ListBox.ItemTemplate>
                 <DataTemplate DataType="models:LogListItem">
                   <Border Background="#373737"

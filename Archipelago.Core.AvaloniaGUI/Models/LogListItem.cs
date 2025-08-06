@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive.Concurrency;
 using System.Text;
 using System.Threading.Tasks;
 using Color = Avalonia.Media.Color;
@@ -32,10 +33,14 @@ namespace Archipelago.Core.AvaloniaGUI.Models
         }
         public LogListItem(string text, Color color)
         {
-            TextSpans = new ObservableCollection<TextSpan>()
+            RxApp.MainThreadScheduler.Schedule(() =>
             {
-                new TextSpan(){Text = text, TextColor = new SolidColorBrush(color)},
-            };
+                TextSpans = new ObservableCollection<TextSpan>()
+                {
+                    new TextSpan(){Text = text, TextColor = new SolidColorBrush(color)},
+                };
+            });
+
         }
         public LogListItem(IEnumerable<TextSpan> spans)
         {
@@ -44,13 +49,16 @@ namespace Archipelago.Core.AvaloniaGUI.Models
         public LogListItem(APMessageModel message)
         {
             TextSpans = new ObservableCollection<TextSpan>();
-            foreach (var part in message.Parts)
+            RxApp.MainThreadScheduler.Schedule(() =>
             {
-                var span = new TextSpan();
-                span.Text = part.Text;
-                span.TextColor = new SolidColorBrush(Color.FromRgb((byte)part.Color.R, (byte)part.Color.G, (byte)part.Color.B));
-                TextSpans.Add(span);
-            }
+                foreach (var part in message.Parts)
+                {
+                    var span = new TextSpan();
+                    span.Text = part.Text;
+                    span.TextColor = new SolidColorBrush(Color.FromRgb((byte)part.Color.R, (byte)part.Color.G, (byte)part.Color.B));
+                    TextSpans.Add(span);
+                }
+            });
         }
     }
 }
