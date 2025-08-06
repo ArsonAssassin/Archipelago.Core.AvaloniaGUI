@@ -195,7 +195,7 @@
 
           <!-- Hints Tab -->
           <TabItem Header="Hints">
-            <ListBox ItemsSource="{Binding HintList}">
+            <ListBox ItemsSource="{Binding HintList}" Name="HintList">
               <ListBox.ItemTemplate>
                 <DataTemplate DataType="models:LogListItem">
                   <Border Background="#373737"
@@ -224,7 +224,7 @@
 
           <!-- Received Items Tab -->
           <TabItem Header="Received Items">
-            <ListBox ItemsSource="{Binding ItemList}">
+            <ListBox ItemsSource="{Binding ItemList}" Name="ItemList">
               <ListBox.ItemTemplate>
                 <DataTemplate DataType="models:LogListItem">
                   <Border Background="#373737"
@@ -240,7 +240,7 @@
                       <ItemsControl.ItemTemplate>
                         <DataTemplate DataType="models:TextSpan">
                           <TextBlock Text="{Binding Text}"
-                                   Foreground="White"
+                                   Foreground="{Binding TextColor}"
                                    TextWrapping="Wrap"/>
                         </DataTemplate>
                       </ItemsControl.ItemTemplate>

@@ -15,9 +15,13 @@ public partial class MainWindow : Window
         base.OnLoaded(e);
         InitializeTitleBarDragging();
         if (!(DataContext is MainWindowViewModel viewModel)) return;
-        viewModel.LogList.CollectionChanged += (o, e) => ScrollToEnd(o as ListBox);
-        viewModel.HintList.CollectionChanged += (o, e) => ScrollToEnd(o as ListBox);
-        viewModel.ItemList.CollectionChanged += (o, e) => ScrollToEnd(o as ListBox);
+        var logListBox = this.FindControl<ListBox>("Log");
+        var hintListBox = this.FindControl<ListBox>("HintList");
+        var itemListBox = this.FindControl<ListBox>("ItemList");
+
+        viewModel.LogList.CollectionChanged += (o, e) => ScrollToEnd(logListBox);
+        viewModel.HintList.CollectionChanged += (o, e) => ScrollToEnd(hintListBox);
+        viewModel.ItemList.CollectionChanged += (o, e) => ScrollToEnd(itemListBox);
     }
     private void InitializeTitleBarDragging()
     {

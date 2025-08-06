@@ -34,7 +34,7 @@ namespace Archipelago.Core.AvaloniaGUI.Models
         {
             TextSpans = new ObservableCollection<TextSpan>()
             {
-                new TextSpan(){Text = text, TextColor = color},
+                new TextSpan(){Text = text, TextColor = new SolidColorBrush(color)},
             };
         }
         public LogListItem(IEnumerable<TextSpan> spans)
@@ -48,7 +48,7 @@ namespace Archipelago.Core.AvaloniaGUI.Models
             {
                 var span = new TextSpan();
                 span.Text = part.Text;
-                span.TextColor = Color.FromRgb((byte)part.Color.R, (byte)part.Color.G, (byte)part.Color.B);
+                span.TextColor = new SolidColorBrush(Color.FromRgb((byte)part.Color.R, (byte)part.Color.G, (byte)part.Color.B));
                 TextSpans.Add(span);
             }
         }

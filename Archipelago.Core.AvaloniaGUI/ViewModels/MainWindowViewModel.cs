@@ -159,7 +159,11 @@ namespace Archipelago.Core.AvaloniaGUI.ViewModels
             _processingTimer.AutoReset = true;
             _processingTimer.Start();
 
-            LoggerConfig.Initialize((e, l) => WriteLine(e, l), (a, l) => LogMessage(a, l));
+            LoggerConfig.Initialize((e, l) => WriteLine(e, l), (a, l) => WriteLine(a, l));
+        }
+        //Parameterless constructor required for XAML design time compiler
+        public MainWindowViewModel() : this("0.6.2")
+        {
         }
         private void HandleTogglePane()
         {
@@ -206,15 +210,6 @@ namespace Archipelago.Core.AvaloniaGUI.ViewModels
         public void WriteLine(APMessageModel output, LogEventLevel level)
         {
             _messageQueue.Enqueue(new LogListItem(output));
-        }
-        private async void LogMessage(APMessageModel output, LogEventLevel level)
-        {
-
-           RxApp.MainThreadScheduler.Schedule(() =>
-            {
-                LogList.Add(new LogListItem(output));
-            });
-
         }
         private Color GetColorForLogLevel(LogEventLevel level)
         {
@@ -271,6 +266,7 @@ namespace Archipelago.Core.AvaloniaGUI.ViewModels
                                 {
                                     LogList.Add(item);
                                 }
+
                             }
                         });
                     }

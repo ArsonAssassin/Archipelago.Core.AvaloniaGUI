@@ -10,6 +10,6 @@ namespace Archipelago.Core.AvaloniaGUI.Models
     public class TextSpan
     {
         public string Text { get; set; }
-        public Color TextColor { get; set; }
+        public IBrush TextColor { get; set; }
     }
 }
