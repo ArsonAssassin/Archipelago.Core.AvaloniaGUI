@@ -79,7 +79,7 @@
 
 		</Style>
 		<Style Selector="ListBoxItem">
-			<Setter Property="Padding" Value="2" />
+			<Setter Property="Padding" Value="0" />
 		</Style>
 		<Style Selector="Button">
 			<Setter Property="HorizontalAlignment" Value="Stretch" />
@@ -96,7 +96,7 @@
 			<Setter Property="Padding" Value="0" />
 			<Setter Property="Margin" Value="0"/>
 		</Style>
-		<Style Selector="ListBox Border" >
+		<Style Selector="ListBox > Border" >
 			<Setter Property="Background" Value="{StaticResource BackgroundMedium}" />
 			<Setter Property="Padding" Value="5" />
 			<Setter Property="Margin" Value="0"/>
@@ -213,15 +213,15 @@
 									<ListBox.ItemTemplate>
 										<DataTemplate DataType="models:LogListItem">
 											<Border>
-												<ItemsControl ItemsSource="{Binding TextSpans}">
+												<ItemsControl ItemsSource="{Binding TextSpans}" Padding="0" >
 													<ItemsControl.ItemsPanel>
 														<ItemsPanelTemplate>
-															<StackPanel Orientation="Horizontal" Spacing="2"/>
+															<StackPanel Orientation="Horizontal" Spacing="0" Margin="0"/>
 														</ItemsPanelTemplate>
 													</ItemsControl.ItemsPanel>
 													<ItemsControl.ItemTemplate>
 														<DataTemplate DataType="models:TextSpan">
-															<TextBox IsEnabled="False" Text="{Binding Text}"
+															<TextBlock IsEnabled="False" Text="{Binding Text}" Margin="0" Padding="0"
 																	 Foreground="{Binding TextColor}"
 																	 TextWrapping="Wrap"/>
 														</DataTemplate>
@@ -251,12 +251,12 @@
 											<ItemsControl ItemsSource="{Binding TextSpans}">
 												<ItemsControl.ItemsPanel>
 													<ItemsPanelTemplate>
-														<StackPanel Orientation="Horizontal"/>
+														<StackPanel Orientation="Horizontal" Spacing="0" Margin="0"/>
 													</ItemsPanelTemplate>
 												</ItemsControl.ItemsPanel>
 												<ItemsControl.ItemTemplate>
 													<DataTemplate DataType="models:TextSpan">
-														<TextBox IsEnabled="False" Text="{Binding Text}"
+														<TextBlock IsEnabled="False" Text="{Binding Text}" Margin="0" Padding="0"
 																 Foreground="{Binding TextColor}"
 																 TextWrapping="Wrap"/>
 													</DataTemplate>
@@ -277,12 +277,12 @@
 											<ItemsControl ItemsSource="{Binding TextSpans}">
 												<ItemsControl.ItemsPanel>
 													<ItemsPanelTemplate>
-														<StackPanel Orientation="Horizontal"/>
+														<StackPanel Orientation="Horizontal" Spacing="0" Margin="0"/>
 													</ItemsPanelTemplate>
 												</ItemsControl.ItemsPanel>
 												<ItemsControl.ItemTemplate>
 													<DataTemplate DataType="models:TextSpan">
-														<TextBox IsEnabled="False" Text="{Binding Text}"
+														<TextBlock IsEnabled="False" Text="{Binding Text}" Margin="0" Padding="0"
 																 Foreground="{Binding TextColor}"
 																 TextWrapping="Wrap"/>
 													</DataTemplate>

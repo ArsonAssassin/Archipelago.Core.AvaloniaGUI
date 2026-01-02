@@ -46,7 +46,7 @@ namespace Archipelago.Core.AvaloniaGUI.ViewModels
         private readonly object _processingLock = new();
         private bool _isProcessingQueue = false;
         private const int MAX_BATCH_SIZE = 25; // Process messages in batches
-        private const int TIMER_INTERVAL = 100; // Process queue every 100ms
+        private const int TIMER_INTERVAL = 20; // Process queue every 20ms
         private readonly ConcurrentQueue<LogListItem> _messageQueue = new();
         public bool IsPaneOpen
         {
@@ -151,7 +151,7 @@ namespace Archipelago.Core.AvaloniaGUI.ViewModels
             CommandSentCommand = ReactiveCommand.Create(HandleCommandSent);
             TogglePaneCommand = ReactiveCommand.Create(HandleTogglePane);
             UnstuckClickedCommand = ReactiveCommand.Create(HandleUnstuck);
-            ClientVersion = Helpers.GetAppVersion();
+            ClientVersion = Utils.Helpers.GetAppVersion();
             ArchipelagoVersion = archipelagoVersion;
 
             _processingTimer = new System.Timers.Timer(TIMER_INTERVAL);
