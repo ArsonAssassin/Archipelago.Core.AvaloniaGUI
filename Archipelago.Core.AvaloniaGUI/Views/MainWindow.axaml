@@ -139,8 +139,8 @@
 							<Border Grid.Row="0" >
 								<TextBox IsEnabled="False" Text="Settings" FontSize="16"/>
 							</Border>
-							<Grid RowDefinitions="*,*,*,*,*,*,*"
-								  ColumnDefinitions="*,2*"
+							<Grid RowDefinitions="*,*,*,*,*,*,*,*,*"
+								  ColumnDefinitions="*,*"
 								  Margin="10,20,10,10"
 								  VerticalAlignment="Top" Grid.Row="1" >
 
@@ -171,17 +171,29 @@
 										IsEnabled="{Binding ConnectButtonEnabled}" HorizontalContentAlignment="Center"/>
 
 								<TextBox IsEnabled="False" Grid.Row="4" Grid.Column="0"
-										 Text="Autoscroll&#x0a; Enabled: " MaxLines="2" AcceptsReturn="True"/>
+										 Text="Autoscroll Enabled: " MaxLines="1" AcceptsReturn="True"/>
 								<ToggleSwitch Grid.Row="4" Grid.Column="1" IsChecked="{Binding AutoscrollEnabled}"/>
 
-
 								<TextBox IsEnabled="False" Grid.Row="5" Grid.Column="0"
+										 Text="Overlay Enabled: " MaxLines="1" AcceptsReturn="True"/>
+								<ToggleSwitch Grid.Row="5" Grid.Column="1" IsChecked="{Binding OverlayEnabled}"/>
+
+
+								<TextBox IsEnabled="False" Grid.Row="6" Grid.Column="0"
 										 Text="Log Level: "/>
-								<ComboBox Grid.Row="5" Grid.Column="1"
+								<ComboBox Grid.Row="6" Grid.Column="1"
 										  ItemsSource="{Binding LogEventLevels}"
 										  SelectedItem="{Binding SelectedLogLevel}" Margin="5"/>
-
-								<Button Grid.Row="6"
+								
+								<Button Grid.Row="7"
+										Grid.Column="0"
+										Grid.ColumnSpan="2"
+										Content="Open Custom Controls"
+										Command="{Binding OpenCustomControlsClickedCommand}"
+										IsEnabled="{Binding CustomControlsEnabled}"
+										IsVisible="{Binding CustomControlsEnabled}"
+										HorizontalContentAlignment="Center"/>
+								<Button Grid.Row="8"
 										Grid.Column="0"
 										Grid.ColumnSpan="2"
 										Content="UNSTUCK"
@@ -234,7 +246,11 @@
 								<Grid Grid.Row="1"
 									  ColumnDefinitions="*,Auto" Margin="5">
 									<TextBox Grid.Column="0"
-											 Text="{Binding CommandText}"/>
+											 Text="{Binding CommandText}">
+										            <TextBox.KeyBindings>
+														<KeyBinding  Command="{Binding CommandSentCommand}" Gesture="Enter" />
+													</TextBox.KeyBindings>
+										</TextBox>
 									<Button Grid.Column="1" HorizontalAlignment="Center"
 											Content="Send"
 											Command="{Binding CommandSentCommand}"/>

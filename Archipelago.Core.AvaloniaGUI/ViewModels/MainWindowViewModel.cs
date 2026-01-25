@@ -1,6 +1,7 @@
 ﻿using Archipelago.Core.AvaloniaGUI.Logging;
 using Archipelago.Core.AvaloniaGUI.Models;
 using Archipelago.Core.AvaloniaGUI.Utils;
+using Avalonia.Controls;
 using Avalonia.Logging;
 using Avalonia.Media;
 using Avalonia.ReactiveUI;
@@ -45,6 +46,8 @@ namespace Archipelago.Core.AvaloniaGUI.ViewModels
         private readonly System.Timers.Timer _processingTimer;
         private readonly object _processingLock = new();
         private bool _isProcessingQueue = false;
+        private bool _overlayEnabled;
+        private Window _customControlsWindow;
         private const int MAX_BATCH_SIZE = 25; // Process messages in batches
         private const int TIMER_INTERVAL = 20; // Process queue every 20ms
         private readonly ConcurrentQueue<LogListItem> _messageQueue = new();
@@ -52,6 +55,15 @@ namespace Archipelago.Core.AvaloniaGUI.ViewModels
         {
             get => _isPaneOpen;
             set => this.RaiseAndSetIfChanged(ref _isPaneOpen, value);
+        }
+        public Window CustomControlsWindow 
+        {
+            get => _customControlsWindow;             
+            set 
+            {
+                this.RaiseAndSetIfChanged(ref _customControlsWindow, value); 
+                this.RaisePropertyChanged(nameof(CustomControlsEnabled));
+            }      
         }
         public ObservableCollection<string> LogEventLevels { get; private set; } = Enum.GetNames(typeof(LogEventLevel)).ToObservableCollection();
         public string SelectedLogLevel
@@ -88,10 +100,20 @@ namespace Archipelago.Core.AvaloniaGUI.ViewModels
             get => this._autoscrollEnabled;
             set => this.RaiseAndSetIfChanged(ref _autoscrollEnabled, value);
         }
+        public bool OverlayEnabled
+        {
+            get => this._overlayEnabled;
+            set => this.RaiseAndSetIfChanged(ref _overlayEnabled, value);
+        }
+        public bool CustomControlsEnabled
+        {
+            get => this.CustomControlsWindow != null;
+        }
         public ReactiveCommand<Unit, Unit> ConnectClickedCommand { get; }
         public ReactiveCommand<Unit, Unit> UnstuckClickedCommand { get; }
         public ReactiveCommand<Unit, Unit> TogglePaneCommand { get; }
         public ReactiveCommand<Unit, Unit> CommandSentCommand { get; }
+        public ReactiveCommand<Unit, Unit> OpenCustomControlsClickedCommand { get; }
 
         public ObservableCollection<LogListItem> LogList
         {
@@ -140,7 +162,7 @@ namespace Archipelago.Core.AvaloniaGUI.ViewModels
             get => _archipelagoVersion;
             set => this.RaiseAndSetIfChanged(ref this._archipelagoVersion, value);
         }
-        public MainWindowViewModel(string archipelagoVersion = "0.6.2")
+        public MainWindowViewModel(string archipelagoVersion = "0.6.5")
         {
             if (!Dispatcher.UIThread.CheckAccess())
             {
@@ -151,6 +173,7 @@ namespace Archipelago.Core.AvaloniaGUI.ViewModels
             CommandSentCommand = ReactiveCommand.Create(HandleCommandSent);
             TogglePaneCommand = ReactiveCommand.Create(HandleTogglePane);
             UnstuckClickedCommand = ReactiveCommand.Create(HandleUnstuck);
+            OpenCustomControlsClickedCommand = ReactiveCommand.Create(OpenCustomControls);
             ClientVersion = Utils.Helpers.GetAppVersion();
             ArchipelagoVersion = archipelagoVersion;
 
@@ -161,8 +184,14 @@ namespace Archipelago.Core.AvaloniaGUI.ViewModels
 
             LoggerConfig.Initialize((e, l) => WriteLine(e, l), (a, l) => WriteLine(a, l));
         }
+
+        private void OpenCustomControls()
+        {
+            CustomControlsWindow.Show();
+        }
+
         //Parameterless constructor required for XAML design time compiler
-        public MainWindowViewModel() : this("0.6.2")
+        public MainWindowViewModel() : this("0.6.5")
         {
         }
         private void HandleTogglePane()
@@ -174,6 +203,7 @@ namespace Archipelago.Core.AvaloniaGUI.ViewModels
         }
         private void HandleCommandSent()
         {
+            if (string.IsNullOrWhiteSpace(CommandText)) return;
             RxApp.MainThreadScheduler.Schedule(() =>
             {
                 CommandReceived?.Invoke(this, new ArchipelagoCommandEventArgs
