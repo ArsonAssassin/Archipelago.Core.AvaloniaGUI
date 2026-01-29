@@ -128,7 +128,7 @@
 			</Border>
 
 
-			<SplitView IsPaneOpen="{Binding IsPaneOpen}"  CornerRadius="{StaticResource WindowBottomCornerRadius}">
+			<SplitView IsPaneOpen="{Binding IsPaneOpen, Mode=TwoWay}"  CornerRadius="{StaticResource WindowBottomCornerRadius}">
 
 				<!-- Flyout Panel (Settings) -->
 				<SplitView.Pane>

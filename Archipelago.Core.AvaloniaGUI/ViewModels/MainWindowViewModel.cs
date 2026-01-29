@@ -32,10 +32,6 @@ namespace Archipelago.Core.AvaloniaGUI.ViewModels
         private ObservableCollection<LogListItem> _logList = new ObservableCollection<LogListItem>();
         private string _clientVersion;
         private string _archipelagoVersion;
-        private Color _backgroundColor;
-        private Color _textColor;
-        private Color _buttonColor;
-        private Color _buttonTextColor;
         private string _commandText;
         private string _selectedLogLevel;
         private bool _connectButtonEnabled;
