@@ -8,6 +8,7 @@
     <Product>Archipelago.Core.AvaloniaGUI</Product>
     <PackageId>Archipelago.Core.AvaloniaGUI</PackageId>
     <Version>0.6.1</Version>
+    <AvaloniaVersion>11.1.0</AvaloniaVersion>
     <Authors>ArsonAssassin</Authors>
     <Description>Cross platform UI library for Archipelago.Core</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>

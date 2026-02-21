@@ -38,7 +38,7 @@ namespace Archipelago.Core.AvaloniaGUI.Logging
         {
             var loggerConfiguration = new LoggerConfiguration()
                 .MinimumLevel.Is(_minimumLevel)
-                .WriteTo.ArchipelagoGuiSink(_outputAction, _archipelagoEventLogHandler);
+                .WriteTo.ArchipelagoGuiSink(_outputAction, _archipelagoEventLogHandler, _minimumLevel);
 
             (_logger as IDisposable)?.Dispose();
 
@@ -50,7 +50,7 @@ namespace Archipelago.Core.AvaloniaGUI.Logging
         {
             return new LoggerConfiguration()
                 .MinimumLevel.Is(_minimumLevel)
-                .WriteTo.ArchipelagoGuiSink(mainFormWriter, archipelagoEventLogHandler);
+                .WriteTo.ArchipelagoGuiSink(mainFormWriter, archipelagoEventLogHandler, _minimumLevel);
         }
     }
 }
