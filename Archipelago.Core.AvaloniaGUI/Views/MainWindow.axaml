@@ -38,17 +38,22 @@
 
 		<SolidColorBrush x:Key="ButtonBackground" Color="{StaticResource BackgroundLight}"/>
 		<SolidColorBrush x:Key="ButtonForeground" Color="{StaticResource ForegroundBlack}"/>
-		<SolidColorBrush x:Key="ButtonForegroundDisabled" Color="{StaticResource BackgroundDark}" />
-		<SolidColorBrush x:Key="ButtonBackgroundDisabled" Color="{StaticResource BackgroundDarker}" />
+		<SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{StaticResource BackgroundMedium}"/>
+		<SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="{StaticResource ForegroundWhite}"/>
+		
+		<SolidColorBrush x:Key="ButtonForegroundDisabled" Color="{StaticResource ForegroundBlack}" />
+		<SolidColorBrush x:Key="ButtonBackgroundDisabled" Color="{StaticResource BackgroundMedium}" />
 
 		<SolidColorBrush x:Key="TextControlBackgroundDisabled" Color="{StaticResource Transparent}"/>
 		<SolidColorBrush x:Key="TextControlForegroundDisabled" Color="{StaticResource ForegroundWhite}"/>
 		<SolidColorBrush x:Key="TextControlBorderBrushDisabled" Color="{StaticResource Transparent}"/>
-
+		
+		<SolidColorBrush x:Key="TextControlForeground" Color="{StaticResource ForegroundWhite}"/>
+		<SolidColorBrush x:Key="TextControlForegroundFocused" Color="{StaticResource ForegroundWhite}"/>
 		<SolidColorBrush x:Key="TextControlBackground" Color="{StaticResource BackgroundMedium}"/>
 		<SolidColorBrush x:Key="TextControlBorderBrush" Color="{StaticResource Transparent}"/>
-		<SolidColorBrush x:Key="TextControlPlaceholderForeground" Color="{StaticResource BackgroundLight}"/>
-		<SolidColorBrush x:Key="TextControlPlaceholderForegroundFocused" Color="{StaticResource BackgroundLight}"/>
+		<SolidColorBrush x:Key="TextControlPlaceholderForeground" Color="{StaticResource ForegroundWhite}"/>
+		<SolidColorBrush x:Key="TextControlPlaceholderForegroundFocused" Color="{StaticResource ForegroundWhite}"/>
 		<SolidColorBrush x:Key="TextControlBackgroundFocused" Color="{StaticResource BackgroundMedium}"/>
 
 		<SolidColorBrush x:Key="ToggleSwitchContentForeground" Color="{StaticResource ForegroundWhite}"/>
@@ -57,13 +62,19 @@
 		<SolidColorBrush x:Key="ToggleSwitchKnobFillOn" Color="{StaticResource ForegroundWhite}"/>
 		<SolidColorBrush x:Key="ToggleSwitchKnobFillOff" Color="{StaticResource ForegroundWhite}"/>
 
+		<SolidColorBrush x:Key="ComboBoxForeground" Color="{StaticResource ForegroundWhite}"/>
 		<SolidColorBrush x:Key="ComboBoxBackground" Color="{StaticResource BackgroundMedium}"/>
 
 		<SolidColorBrush x:Key="MenuFlyoutItemBackground" Color="{StaticResource BackgroundDark}"/>
-
+		
+		<SolidColorBrush x:Key="TabControlForeground" Color="{StaticResource ForegroundWhite}"/>
 		<SolidColorBrush x:Key="TabControlBackground" Color="{StaticResource BackgroundDark}"/>
 		<SolidColorBrush x:Key="TabItemHeaderForegroundSelected" Color="{StaticResource ForegroundWhite}"/>
+		<SolidColorBrush x:Key="TabItemHeaderForegroundSelectedPointerOver" Color="{StaticResource ForegroundWhite}"/>
+		<SolidColorBrush x:Key="TabItemHeaderBackgroundSelectedPointerOver" Color="{StaticResource BackgroundMedium}"/>
 		<SolidColorBrush x:Key="TabItemHeaderForegroundUnselected" Color="{StaticResource ForegroundWhite}"/>
+		<SolidColorBrush x:Key="TabItemHeaderForegroundUnselectedPointerOver" Color="{StaticResource ForegroundWhite}"/>
+		<SolidColorBrush x:Key="TabItemHeaderBackgroundUnselectedPointerOver" Color="{StaticResource BackgroundMedium}"/>
 	</Window.Resources>
 	<Window.Styles>
 		<Style Selector="TextBox">
