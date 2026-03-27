@@ -16,6 +16,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Concurrency;
+using System.Text;
 using System.Timers;
 using System.Windows.Input;
 using Color = Avalonia.Media.Color;
@@ -47,19 +48,20 @@ namespace Archipelago.Core.AvaloniaGUI.ViewModels
         private const int MAX_BATCH_SIZE = 25; // Process messages in batches
         private const int TIMER_INTERVAL = 20; // Process queue every 20ms
         private readonly ConcurrentQueue<LogListItem> _messageQueue = new();
+        private readonly List<Command> commands = new List<Command>;
         public bool IsPaneOpen
         {
             get => _isPaneOpen;
             set => this.RaiseAndSetIfChanged(ref _isPaneOpen, value);
         }
-        public Window CustomControlsWindow 
+        public Window CustomControlsWindow
         {
-            get => _customControlsWindow;             
-            set 
+            get => _customControlsWindow;
+            set
             {
-                this.RaiseAndSetIfChanged(ref _customControlsWindow, value); 
+                this.RaiseAndSetIfChanged(ref _customControlsWindow, value);
                 this.RaisePropertyChanged(nameof(CustomControlsEnabled));
-            }      
+            }
         }
         public ObservableCollection<string> LogEventLevels { get; private set; } = Enum.GetNames(typeof(LogEventLevel)).ToObservableCollection();
         public string SelectedLogLevel
@@ -119,7 +121,7 @@ namespace Archipelago.Core.AvaloniaGUI.ViewModels
 
         public ObservableCollection<LogListItem> HintList
         {
-            get => _hintList; 
+            get => _hintList;
             set => this.RaiseAndSetIfChanged(ref this._hintList, value);
         }
 
@@ -164,6 +166,10 @@ namespace Archipelago.Core.AvaloniaGUI.ViewModels
             {
                 throw new InvalidOperationException("ViewModel must be created on the UI thread");
             }
+            commands = new List<Command>
+            {
+                new Command{ Name= "help", HelpText = "Shows a list of available commands", Action = ShowHelp}
+            };
             RxApp.MainThreadScheduler = AvaloniaScheduler.Instance;
             ConnectClickedCommand = ReactiveCommand.Create(HandleConnect);
             CommandSentCommand = ReactiveCommand.Create(HandleCommandSent);
@@ -181,6 +187,30 @@ namespace Archipelago.Core.AvaloniaGUI.ViewModels
             LoggerConfig.Initialize((e, l) => WriteLine(e, l), (a, l) => WriteLine(a, l));
         }
 
+        private void ShowHelp()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("Command List:");
+            foreach (var command in commands)
+            {
+                if (!string.IsNullOrWhiteSpace(command.HelpText))
+                {
+                    sb.AppendLine("/" + command.Name + " - " + command.HelpText);
+                }
+                else
+                {
+                    sb.AppendLine("/" + command.Name);
+                }
+            }
+
+            WriteLine(sb.ToString(), LogEventLevel.Information);
+        }
+
+        private void RegisterCommand(Command command)
+        {
+            if (command.Action == null || string.IsNullOrWhiteSpace(command.Name)) return;
+            commands.Add(command);
+        }
         private void OpenCustomControls()
         {
             CustomControlsWindow.Show();
@@ -200,6 +230,15 @@ namespace Archipelago.Core.AvaloniaGUI.ViewModels
         private void HandleCommandSent()
         {
             if (string.IsNullOrWhiteSpace(CommandText)) return;
+            foreach (var command in commands)
+            {
+                if (CommandText.ToLower().StartsWith($"/{command.Name}"))
+                {
+                    command.Action.Invoke();
+                    return;
+                }
+            }
+
             RxApp.MainThreadScheduler.Schedule(() =>
             {
                 CommandReceived?.Invoke(this, new ArchipelagoCommandEventArgs
