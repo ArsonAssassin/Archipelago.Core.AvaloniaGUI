@@ -26,6 +26,8 @@ namespace Archipelago.Core.AvaloniaGUI.ViewModels
 {
     public partial class MainWindowViewModel : ViewModelBase
     {
+        private const string Connect = "Connect";
+        private const string Disconnect = "Disconnect";
         private string _host;
         private string _slot;
         private string _password;
@@ -45,10 +47,22 @@ namespace Archipelago.Core.AvaloniaGUI.ViewModels
         private bool _isProcessingQueue = false;
         private bool _overlayEnabled;
         private Window _customControlsWindow;
+        private bool _isConnected = false;
+        private string _connectButtonText = Connect;
         private const int MAX_BATCH_SIZE = 25; // Process messages in batches
         private const int TIMER_INTERVAL = 20; // Process queue every 20ms
         private readonly ConcurrentQueue<LogListItem> _messageQueue = new();
-        private readonly List<Command> commands = new List<Command>;
+        private readonly List<Command> commands = new List<Command>();
+        public string ConnectButtonText
+        {
+            get => _connectButtonText;
+            set => this.RaiseAndSetIfChanged(ref _connectButtonText, value);
+        }
+        public bool IsConnected
+        {
+            get => _isConnected;
+            set => this.RaiseAndSetIfChanged(ref _isConnected, value);
+        }
         public bool IsPaneOpen
         {
             get => _isPaneOpen;
@@ -81,6 +95,7 @@ namespace Archipelago.Core.AvaloniaGUI.ViewModels
             }
         }
         public event EventHandler<ConnectClickedEventArgs> ConnectClicked;
+        public event EventHandler<EventArgs> DisconnectClicked;
         public event EventHandler<ArchipelagoCommandEventArgs> CommandReceived;
         public event EventHandler UnstuckClicked;
         public bool UnstuckButtonEnabled
@@ -257,15 +272,29 @@ namespace Archipelago.Core.AvaloniaGUI.ViewModels
         }
         private void HandleConnect()
         {
-            RxApp.MainThreadScheduler.Schedule(() =>
+            if (!IsConnected)
             {
-                ConnectClicked?.Invoke(this, new ConnectClickedEventArgs
+                RxApp.MainThreadScheduler.Schedule(() =>
                 {
-                    Host = Host,
-                    Slot = Slot,
-                    Password = Password
+                    ConnectClicked?.Invoke(this, new ConnectClickedEventArgs
+                    {
+                        Host = Host,
+                        Slot = Slot,
+                        Password = Password
+                    });
+                    IsConnected = true;
+                    ConnectButtonText = Disconnect;
                 });
-            });
+            }
+            else
+            {
+                RxApp.MainThreadScheduler.Schedule(() =>
+                {
+                    DisconnectClicked?.Invoke(this, EventArgs.Empty);
+                });
+                IsConnected = false;
+                ConnectButtonText = Connect;
+            }
         }
 
         public void WriteLine(string output, LogEventLevel level)
