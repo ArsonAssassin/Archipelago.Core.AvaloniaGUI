@@ -97,6 +97,7 @@
 		</Style>
 		<Style Selector="ListBox">
 			<Setter Property="Background" Value="{StaticResource BackgroundMedium}" />
+			<Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
 		</Style>
 		<Style Selector="DockPanel > Border" >
 			<Setter Property="Background" Value="{StaticResource BackgroundMedium}" />
@@ -239,7 +240,7 @@
 												<ItemsControl ItemsSource="{Binding TextSpans}" Padding="0" >
 													<ItemsControl.ItemsPanel>
 														<ItemsPanelTemplate>
-															<StackPanel Orientation="Horizontal" Spacing="0" Margin="0"/>
+															<WrapPanel Orientation="Horizontal" Margin="0"/>
 														</ItemsPanelTemplate>
 													</ItemsControl.ItemsPanel>
 													<ItemsControl.ItemTemplate>
@@ -278,7 +279,7 @@
 											<ItemsControl ItemsSource="{Binding TextSpans}">
 												<ItemsControl.ItemsPanel>
 													<ItemsPanelTemplate>
-														<StackPanel Orientation="Horizontal" Spacing="0" Margin="0"/>
+														<WrapPanel Orientation="Horizontal" Margin="0"/>
 													</ItemsPanelTemplate>
 												</ItemsControl.ItemsPanel>
 												<ItemsControl.ItemTemplate>
@@ -304,7 +305,7 @@
 											<ItemsControl ItemsSource="{Binding TextSpans}">
 												<ItemsControl.ItemsPanel>
 													<ItemsPanelTemplate>
-														<StackPanel Orientation="Horizontal" Spacing="0" Margin="0"/>
+														<WrapPanel Orientation="Horizontal" Margin="0"/>
 													</ItemsPanelTemplate>
 												</ItemsControl.ItemsPanel>
 												<ItemsControl.ItemTemplate>
