@@ -1,6 +1,7 @@
 ﻿using Archipelago.Core.AvaloniaGUI.Logging;
 using Archipelago.Core.AvaloniaGUI.Models;
 using Archipelago.Core.AvaloniaGUI.Utils;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Logging;
 using Avalonia.Media;
@@ -53,6 +54,7 @@ namespace Archipelago.Core.AvaloniaGUI.ViewModels
         private const int TIMER_INTERVAL = 20; // Process queue every 20ms
         private readonly ConcurrentQueue<LogListItem> _messageQueue = new();
         private readonly List<Command> commands = new List<Command>();
+
         public string ConnectButtonText
         {
             get => _connectButtonText;
@@ -77,7 +79,25 @@ namespace Archipelago.Core.AvaloniaGUI.ViewModels
                 this.RaisePropertyChanged(nameof(CustomControlsEnabled));
             }
         }
+        public IEnumerable<string> FontSizes { get; } = ["Small", "Medium", "Large"];
         public ObservableCollection<string> LogEventLevels { get; private set; } = Enum.GetNames(typeof(LogEventLevel)).ToObservableCollection();
+        private string _selectedFontSize = "Medium";
+        public string SelectedFontSize
+        {
+            get => _selectedFontSize;
+            set
+            {
+                _selectedFontSize = value;
+                this.RaisePropertyChanged();
+                Application.Current!.Resources["AppFontSize"] = SelectedFontSize switch
+                {
+                    "Small" => 10d,
+                    "Large" => 16d,
+                    _ => 12d
+                };
+            }
+        }
+
         public string SelectedLogLevel
         {
             get
