@@ -32,10 +32,16 @@ namespace Archipelago.Core.AvaloniaGUI.Logging
                 {
 
                     var logMessage = JsonSerializer.Deserialize<APMessageModel>(message);
+                    if (logMessage?.Parts != null)
+                    {
 
-
-                    _archipelagoEventLogHandler?.Invoke(logMessage, logEvent.Level);
-
+                        _archipelagoEventLogHandler?.Invoke(logMessage, logEvent.Level);
+                    }
+                    if (logEvent.Level >= _logLevel)
+                    {
+                        var msg = logEvent.RenderMessage();
+                        _outputEvent?.Invoke(logEvent.RenderMessage(), logEvent.Level);
+                    }
                     return;
                 }
             }
