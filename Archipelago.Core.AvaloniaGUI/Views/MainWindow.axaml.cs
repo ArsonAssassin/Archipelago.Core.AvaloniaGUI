@@ -1,4 +1,6 @@
-﻿using Archipelago.Core.AvaloniaGUI.ViewModels;
+﻿using Archipelago.Core.AvaloniaGUI.Services;
+using Archipelago.Core.AvaloniaGUI.ViewModels;
+using Archipelago.Core.Helpers;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 
@@ -9,6 +11,7 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+        GameClient.ProcessPicker = new AvaloniaProcessPicker(this);
     }
     protected override void OnLoaded(RoutedEventArgs e)
     {

@@ -1,0 +1,187 @@
+<Window xmlns="https://github.com/avaloniaui"
+		ExtendClientAreaToDecorationsHint="True"
+		ExtendClientAreaTitleBarHeightHint="-1"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:vm="using:Archipelago.Core.AvaloniaGUI.ViewModels"
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:models="using:Archipelago.Core.AvaloniaGUI.Models"
+		mc:Ignorable="d" d:DesignWidth="550" d:DesignHeight="400"
+		Width="550" Height="400"
+		x:Class="Archipelago.Core.AvaloniaGUI.Views.ProcessPickerWindow"
+		x:DataType="vm:ProcessPickerViewModel"
+		Title="Select Process" CornerRadius="{StaticResource WindowCornerRadius}" Background="Transparent" TransparencyLevelHint="Transparent"
+		CanResize="False"
+		WindowStartupLocation="CenterOwner">
+	<Window.Resources>
+		<Color x:Key="BackgroundDark">#202020</Color>
+		<Color x:Key="BackgroundDarker">#101010</Color>
+		<Color x:Key="BackgroundMedium">#373737</Color>
+		<Color x:Key="BackgroundLight">DarkGray</Color>
+		<Color x:Key="ForegroundWhite">White</Color>
+		<Color x:Key="ForegroundBlack">Black</Color>
+		<Color x:Key="ShadowColor">#40000000</Color>
+		<Color x:Key="ActiveControl">#269FFF</Color>
+		<Color x:Key="Transparent">#00000000</Color>
+		<CornerRadius x:Key="WindowCornerRadius">10</CornerRadius>
+		<CornerRadius x:Key="WindowTopCornerRadius">10,10,0,0</CornerRadius>
+		<CornerRadius x:Key="WindowBottomCornerRadius">0,0,10,10</CornerRadius>
+
+		<SolidColorBrush x:Key="BrushBackgroundDark" Color="{StaticResource BackgroundDark}"/>
+		<SolidColorBrush x:Key="BrushBackgroundDarker" Color="{StaticResource BackgroundDarker}"/>
+		<SolidColorBrush x:Key="BrushBackgroundMedium" Color="{StaticResource BackgroundMedium}"/>
+		<SolidColorBrush x:Key="BrushBackgroundLight" Color="{StaticResource BackgroundLight}"/>
+		<SolidColorBrush x:Key="BrushForegroundWhite" Color="{StaticResource ForegroundWhite}"/>
+		<SolidColorBrush x:Key="BrushForegroundBlack" Color="{StaticResource ForegroundBlack}"/>
+
+		<SolidColorBrush x:Key="ButtonBackground" Color="{StaticResource BackgroundLight}"/>
+		<SolidColorBrush x:Key="ButtonForeground" Color="{StaticResource ForegroundBlack}"/>
+		<SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{StaticResource BackgroundMedium}"/>
+		<SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="{StaticResource ForegroundWhite}"/>
+		<SolidColorBrush x:Key="ButtonForegroundDisabled" Color="{StaticResource ForegroundBlack}" />
+		<SolidColorBrush x:Key="ButtonBackgroundDisabled" Color="{StaticResource BackgroundMedium}" />
+
+		<SolidColorBrush x:Key="TextControlForeground" Color="{StaticResource ForegroundWhite}"/>
+		<SolidColorBrush x:Key="TextControlForegroundFocused" Color="{StaticResource ForegroundWhite}"/>
+		<SolidColorBrush x:Key="TextControlBackground" Color="{StaticResource BackgroundMedium}"/>
+		<SolidColorBrush x:Key="TextControlBorderBrush" Color="{StaticResource Transparent}"/>
+		<SolidColorBrush x:Key="TextControlPlaceholderForeground" Color="{StaticResource ForegroundWhite}"/>
+		<SolidColorBrush x:Key="TextControlPlaceholderForegroundFocused" Color="{StaticResource ForegroundWhite}"/>
+		<SolidColorBrush x:Key="TextControlBackgroundFocused" Color="{StaticResource BackgroundMedium}"/>
+		<SolidColorBrush x:Key="TextControlBackgroundDisabled" Color="{StaticResource Transparent}"/>
+		<SolidColorBrush x:Key="TextControlForegroundDisabled" Color="{StaticResource ForegroundWhite}"/>
+		<SolidColorBrush x:Key="TextControlBorderBrushDisabled" Color="{StaticResource Transparent}"/>
+
+		<SolidColorBrush x:Key="ListViewItemBackgroundSelected" Color="{StaticResource ActiveControl}"/>
+		<SolidColorBrush x:Key="ListViewItemForegroundSelected" Color="{StaticResource ForegroundWhite}"/>
+	</Window.Resources>
+	<Window.Styles>
+		<Style Selector="TextBox">
+			<Setter Property="FontSize" Value="{DynamicResource AppFontSize}"/>
+			<Setter Property="Margin" Value="5,10,5,10"/>
+			<Setter Property="VerticalAlignment" Value="Center"/>
+			<Setter Property="HorizontalAlignment" Value="Stretch"/>
+		</Style>
+		<Style Selector="TextBlock">
+			<Setter Property="FontSize" Value="{DynamicResource AppFontSize}"/>
+		</Style>
+		<Style Selector="Button">
+			<Setter Property="FontSize" Value="{DynamicResource AppFontSize}"/>
+		</Style>
+		<Style Selector="ListBox">
+			<Setter Property="Background" Value="{StaticResource BackgroundMedium}" />
+			<Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+		</Style>
+		<Style Selector="ListBox > Border">
+			<Setter Property="Background" Value="{StaticResource BackgroundMedium}" />
+			<Setter Property="Padding" Value="0" />
+			<Setter Property="Margin" Value="0"/>
+			<Setter Property="BoxShadow" Value="0 2 4 0 #40000000"/>
+		</Style>
+		<Style Selector="ListBoxItem">
+			<Setter Property="Padding" Value="4,2" />
+		</Style>
+		<Style Selector="ListBoxItem:selected /template/ ContentPresenter">
+			<Setter Property="Background" Value="{StaticResource ActiveControl}"/>
+		</Style>
+		<Style Selector="Border#HeaderBar">
+			<Setter Property="Background" Value="{StaticResource BackgroundMedium}" />
+			<Setter Property="Height" Value="40" />
+		</Style>
+	</Window.Styles>
+	<Design.DataContext>
+		<vm:ProcessPickerViewModel/>
+	</Design.DataContext>
+	<Border BorderThickness="1" BorderBrush="{StaticResource BackgroundMedium}" Background="{StaticResource BackgroundDark}" CornerRadius="10">
+		<DockPanel Name="TitleBarPanel">
+			<!-- Header bar -->
+			<Border Name="HeaderBar" DockPanel.Dock="Top" CornerRadius="{StaticResource WindowTopCornerRadius}">
+				<TextBox Text="Select Process" FontSize="16" IsEnabled="False"
+						 HorizontalAlignment="Center"/>
+			</Border>
+
+			<!-- Main content -->
+			<Border CornerRadius="{StaticResource WindowBottomCornerRadius}"
+					Background="{StaticResource BackgroundDark}"
+					ClipToBounds="True">
+				<Grid RowDefinitions="Auto,*,Auto" Margin="10">
+					<!-- Search bar -->
+					<Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="0,0,0,5">
+						<TextBox Grid.Column="0"
+								 Watermark="Search process name..."
+								 Text="{Binding SearchText}"
+								 Margin="0,5,5,5">
+							<TextBox.KeyBindings>
+								<KeyBinding Command="{Binding RefreshCommand}" Gesture="Enter" />
+							</TextBox.KeyBindings>
+						</TextBox>
+						<Button Grid.Column="1"
+								Content="Refresh"
+								Command="{Binding RefreshCommand}"
+								HorizontalContentAlignment="Center"
+								VerticalAlignment="Center"
+								Padding="12,6"
+								Margin="0,5,0,5"/>
+					</Grid>
+
+					<!-- Column headers -->
+					<Grid Grid.Row="1" RowDefinitions="Auto,*">
+						<Border Grid.Row="0" Background="{StaticResource BackgroundDarker}" Padding="4,6" CornerRadius="4,4,0,0">
+							<Grid ColumnDefinitions="32,60,*,*">
+								<TextBlock Grid.Column="0" Text="" Foreground="Gray" Margin="4,0"/>
+								<TextBlock Grid.Column="1" Text="PID" Foreground="Gray" FontWeight="SemiBold" Margin="4,0"/>
+								<TextBlock Grid.Column="2" Text="Name" Foreground="Gray" FontWeight="SemiBold" Margin="4,0"/>
+								<TextBlock Grid.Column="3" Text="Window Title" Foreground="Gray" FontWeight="SemiBold" Margin="4,0"/>
+							</Grid>
+						</Border>
+
+						<!-- Process list -->
+						<ListBox Grid.Row="1" Name="ProcessList"
+								 ItemsSource="{Binding Processes}"
+								 SelectedItem="{Binding SelectedProcess}"
+								 CornerRadius="0,0,4,4">
+							<ListBox.ItemTemplate>
+								<DataTemplate DataType="models:ProcessPickerItem">
+									<Grid ColumnDefinitions="32,60,*,*" Margin="0,2">
+										<Image Grid.Column="0" Source="{Binding Icon}"
+											   Width="20" Height="20"
+											   Margin="4,0"
+											   IsVisible="{Binding Icon, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+										<TextBlock Grid.Column="1" Text="{Binding PID}"
+												   Foreground="White" VerticalAlignment="Center" Margin="4,0"/>
+										<TextBlock Grid.Column="2" Text="{Binding ProcessName}"
+												   Foreground="White" VerticalAlignment="Center" Margin="4,0"
+												   TextTrimming="CharacterEllipsis"/>
+										<TextBlock Grid.Column="3" Text="{Binding WindowTitle}"
+												   Foreground="White" VerticalAlignment="Center" Margin="4,0"
+												   TextTrimming="CharacterEllipsis"/>
+									</Grid>
+								</DataTemplate>
+							</ListBox.ItemTemplate>
+						</ListBox>
+					</Grid>
+
+					<!-- OK / Cancel buttons -->
+					<Grid Grid.Row="2" ColumnDefinitions="*,Auto,Auto" Margin="0,10,0,0">
+						<TextBlock Grid.Column="0" VerticalAlignment="Center" Foreground="Gray"
+								   Text="{Binding Processes.Count, StringFormat='{}{0} process(es) found'}"
+								   Margin="4,0"/>
+						<Button Grid.Column="1"
+								Content="OK"
+								Command="{Binding OkCommand}"
+								HorizontalContentAlignment="Center"
+								Width="80"
+								Margin="0,0,8,0"
+								Padding="8,6"/>
+						<Button Grid.Column="2"
+								Content="Cancel"
+								Command="{Binding CancelCommand}"
+								HorizontalContentAlignment="Center"
+								Width="80"
+								Padding="8,6"/>
+					</Grid>
+				</Grid>
+			</Border>
+		</DockPanel>
+	</Border>
+</Window>
